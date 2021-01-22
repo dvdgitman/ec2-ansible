@@ -12,7 +12,7 @@ run the following commands:
 
 add access and secret keys from amazon in the pass.yml:  
 {
-  "ec2_access_key": "Your key",
+  "ec2_access_key": "Your key",   
   "ec2_secret_key": "Your key"
 }  
 
