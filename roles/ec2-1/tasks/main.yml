@@ -1,5 +1,18 @@
 ---
 # tasks file for ec2-1
+- name: Make Sure pip3 Is Installed
+  become: yes
+  apt:
+    update_cache: yes
+    name: python3-pip
+    state: present
+
+
+- name: Make Sure Docker py Is Installed
+  pip:
+    name: docker-py
+    state: present
+
 - name: Make Sure Docker Is Installed
   become: yes
   apt:

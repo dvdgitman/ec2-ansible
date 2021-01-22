@@ -18,6 +18,11 @@
           name: boto3
           state: present
 
+    - name: Make Sure Docker py Is Installed
+      pip:
+          name: docker-py
+          state: present
+
     - name: Creating Security Group for EC2 on AWS
       ec2_group:
         name: MySecurityGroup
