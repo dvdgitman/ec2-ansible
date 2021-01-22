@@ -1,13 +1,15 @@
 ---
 # tasks file for ec2-1
 - name: Make Sure Docker Is Installed
+  become: yes
   apt:
     name: docker.io
     state: present
     update_cache: yes
-  become: yes
+
 
 - name: Start Docker Service
+  become: yes
   service:
     name: docker
     state: started
