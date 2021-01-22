@@ -1,10 +1,10 @@
 ---
-# tasks file for test-role-1
+# tasks file for ec-1
 # first instance
 
 - name: EC2
   become: yes
-  hosts: hosts
+  hosts: localhost
   vars_files:
     - pass.yml
   tasks:
@@ -28,34 +28,36 @@
         assign_public_ip: yes
         instance_tags:
           Name: First EC2
+        rules:
+          - proto: tcp
+            from_port: 22
+            to_port: 22
+            cidr_ip: 0.0.0.0/0
+          - proto: tcp
+            from_port: 80
+            to_port: 80
+            cidr_ip: 0.0.0.0/0
+          rules_egress:
+            - proto: all
+              cidr_ip: 0.0.0.0/0
+      register: ec2
 
-    - name: Make Sure Docker Is Installed
-      apt:
-        name: docker.io
-        state: present
-        update_cache: yes
-      become: yes
+    - name: Add new instance to host group
+      add_host:
+        hostname: "{{ item.public_ip }}"
+        groupname: firstec2
+      loop: "{{ ec2.instances }}"
 
-    - name: Start Docker Service
-      service:
-        name: docker
+    - name: Wait for SSH to come up
+      wait_for:
+        host: "{{ item.public_dns_name }}"
+        port: 22
         state: started
+      loop: "{{ ec2.instances }}"
 
-    - name: Clone Git Repository
-      git:
-        repo: https://github.com/dvdgitman/ip-geolocation-locator
-        dest: /home/ubuntu/ip/iplocation
-
-    - name: Log into DockerHub
-      docker_login:
-        username: davidgman2
-        password: 123456789
-
-    - name: Build an image and push to docker hub
-      docker_image:
-        build:
-          path: /home/ubuntu/ip/iplocation:1.1
-        name: ip
-        repository: davidgman2/ip
-        tag: v1
-        source: build
+- hosts: firstec2
+  gather_facts: no
+  tasks:
+  - name: running role
+    include_role:
+      name: ec2-1
