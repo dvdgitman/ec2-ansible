@@ -32,7 +32,6 @@
     dest: /home/ubuntu/ip/iplocation
 
 - name: Log into DockerHub
-  become: yes
   docker_login:
     username: davidgman2
     password: 123456789
