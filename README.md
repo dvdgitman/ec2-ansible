@@ -13,7 +13,7 @@ run the following commands:
 add access and secret keys from amazon in the pass.yml:  
 {
   "ec2_access_key": "Your key",   
-  "ec2_secret_key": "Your key"
+  "ec2_secret_key": "Your key"  
 }  
 
 add this lines in ansible.cfg:  
@@ -21,5 +21,7 @@ add this lines in ansible.cfg:
 host_key_checking = false
 remote_user = ubuntu
 private_key_file = "pem file key path"
-roles_path = "roles file path"
+roles_path = "roles file path"  
+
+run the playbook with --ask-vault.   
 
