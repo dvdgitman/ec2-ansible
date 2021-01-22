@@ -1,0 +1,32 @@
+---
+# tasks file for ec2-1
+- name: Make Sure Docker Is Installed
+  apt:
+    name: docker.io
+    state: present
+    update_cache: yes
+  become: yes
+
+- name: Start Docker Service
+  service:
+    name: docker
+    state: started
+
+- name: Clone Git Repository
+  git:
+    repo: https://github.com/dvdgitman/ip-geolocation-locator
+    dest: /home/ubuntu/ip/iplocation
+
+- name: Log into DockerHub
+  docker_login:
+    username: davidgman2
+    password: 123456789
+
+- name: Build an image and push to docker hub
+  docker_image:
+    build:
+      path: /home/ubuntu/ip/iplocation:1.1
+    name: ip
+    repository: davidgman2/ip
+    tag: v1
+    source: build
