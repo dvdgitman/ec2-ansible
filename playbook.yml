@@ -59,7 +59,7 @@
         vpc_subnet_id: subnet-d34b319f
         assign_public_ip: yes
         instance_tags:
-          Name: First EC2
+          Name: First Ansible Instance
 # register ec2 as variable
       register: ec2
 
@@ -77,44 +77,44 @@
         vpc_subnet_id: subnet-d34b319f
         assign_public_ip: yes
         instance_tags:
-          Name: Second EC2
+          Name: Second Ansible Instance
 # register ec21 as variable
       register: ec21
 # adding instance's public_ip to host file
-    - name: Add new instance to host group
+    - name: Add first instance to host group
       add_host:
         hostname: "{{ item.public_ip }}"
-        groupname: firstec2
+        groupname: ec2-1
       loop: "{{ ec2.instances }}"
 
-    - name: Add new instance to host group
+    - name: Add second instance to host group
       add_host:
         hostname: "{{ item.public_ip }}"
-        groupname: firstec21
+        groupname: ec2-2
       loop: "{{ ec21.instances }}"
 # connecting to EC2 instances via SSH
-    - name: Wait for SSH to come up
+    - name: connecting to first EC2 via SSH
       wait_for:
         host: "{{ item.public_dns_name }}"
         port: 22
         state: started
       loop: "{{ ec2.instances }}"
 
-    - name: Wait for SSH to come up
+    - name: connecting to second EC2 via SSH
       wait_for:
         host: "{{ item.public_dns_name }}"
         port: 22
         state: started
       loop: "{{ ec21.instances }}"
 # Run first role to install docker and build docker image
-- hosts: firstec2
+- hosts: ec2-1
   gather_facts: yes
   tasks:
   - name: running role
     include_role:
       name: ec2-1
 # Run second role to pull docker image
-- hosts: firstec21
+- hosts: ec2-2
   gather_facts: yes
   tasks:
   - name: running role

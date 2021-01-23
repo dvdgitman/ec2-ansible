@@ -31,3 +31,6 @@ roles_path = "roles file path"
 run the playbook with the next command:  
 #ansible-playbook "playbook.yml" --ask-vault   
 
+
+
+
