@@ -15,16 +15,19 @@ add access and secret keys from amazon in the pass.yml:
   "ec2_secret_key": "Your key"  
 }    
 
-add the next ip in the hosts file:  
+add the next ip in the hosts file:   
+
 [localhost]  
 127.0.0.1  
 
 add this lines in ansible.cfg:  
+
 [defaults]  
 host_key_checking = false  
 remote_user = ubuntu  
 private_key_file = "pem file key path"  
 roles_path = "roles file path"    
 
-run the playbook with --ask-vault.   
+run the playbook with the next command:  
+#ansible-playbook "playbook.yml" --ask-vault   
 
