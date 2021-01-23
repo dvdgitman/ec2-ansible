@@ -42,8 +42,8 @@
 - name: Log into DockerHub
   become: yes
   docker_login:
-    username: "davidgman2"
-    password: "123456789"
+    username: "int2020devops"
+    password: "intpassword"
     api_version: auto
 
 - name: Build an image and push to docker hub
@@ -51,7 +51,7 @@
   docker_image:
     build:
       path: /home/ubuntu/ip/iplocation
-    name: ipapp:v0.1
-    repository: davidgman2/ip
+    name: davidgman:v0.1
+    repository: int2020devops/ansible
     push: yes
     source: build
