@@ -1,5 +1,12 @@
 ---
 # tasks file for ec2-2
+- name: Check If Python Is Installed
+  apt:
+    name: python3-pip
+    state: present
+    update_cache: yes
+  become: yes
+
 - name: Make Sure Docker Is Installed
   become: yes
   apt:
@@ -12,6 +19,11 @@
   service:
     name: docker
     state: started
+
+- name: make sure docker-py installed
+  become: yes
+  pip:
+    name: docker-py
 
 - name: pull a Docker Image
   become: yes
