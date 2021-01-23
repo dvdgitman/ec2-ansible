@@ -8,20 +8,19 @@
     append: yes
   become: yes
 
-
-- name: Check If Python Is Installed
+- name: Check If Python and Docker Are Installed
   apt:
-    name: python3-pip
+    name:
+       - python3-pip
+       - docker.io
     state: present
     update_cache: yes
   become: yes
 
-- name: Make Sure Docker Is Installed
+- name: make sure docker-py installed
   become: yes
-  apt:
-    name: docker.io
-    state: present
-    update_cache: yes
+  pip:
+    name: docker-py
 
 - name: Start Docker Service
   become: yes
@@ -33,11 +32,6 @@
   git:
     repo: https://github.com/dvdgitman/ip-geolocation-locator
     dest: /home/ubuntu/ip/iplocation
-
-- name: make sure docker-py installed
-  become: yes
-  pip:
-    name: docker-py
 
 - name: Log into DockerHub
   become: yes

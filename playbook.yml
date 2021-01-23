@@ -1,33 +1,27 @@
 ---
-# tasks file for ec-1
-# first instance
-
-- name: EC2
+# playbook file for creating EC2 instances
+- name: Deployment Of EC2 instances
   become: yes
   hosts: localhost
+#var file created with vault create
   vars_files:
     - pass.yml
+#install required files for using AWS
   tasks:
-    - name: Make Sure Boto Is Installed
+    - name: Make Sure boto,boto3,docker-py are Installed
       pip:
-        name: boto
+        name:
+          - boto
+          - boto3
+          - docker-py
         state: present
-
-    - name: Make Sure Boto3 Is Installed
-      pip:
-          name: boto3
-          state: present
-
-    - name: Make Sure Docker py Is Installed
-      pip:
-          name: docker-py
-          state: present
-
+# create security group for the EC2 instances
     - name: Creating Security Group for EC2 on AWS
       ec2_group:
         name: MySecurityGroup
         description: MySecurityGroup
         region: us-east-2
+# loading AWS access and secret keys from pass.yml
         aws_access_key: "{{ec2_access_key}}"
         aws_secret_key: "{{ec2_secret_key}}"
         rules:
@@ -50,7 +44,7 @@
         rules_egress:
            - proto: all
              cidr_ip: 0.0.0.0/0
-
+# creating 2 EC2 instances
     - name: Create First Instance
       ec2:
         aws_access_key: "{{ec2_access_key}}"
@@ -66,7 +60,7 @@
         assign_public_ip: yes
         instance_tags:
           Name: First EC2
-
+# register ec2 as variable
       register: ec2
 
     - name: Create Second Instance
@@ -84,9 +78,9 @@
         assign_public_ip: yes
         instance_tags:
           Name: Second EC2
-
+# register ec21 as variable
       register: ec21
-
+# adding instance's public_ip to host file
     - name: Add new instance to host group
       add_host:
         hostname: "{{ item.public_ip }}"
@@ -98,7 +92,7 @@
         hostname: "{{ item.public_ip }}"
         groupname: firstec21
       loop: "{{ ec21.instances }}"
-
+# connecting to EC2 instances via SSH
     - name: Wait for SSH to come up
       wait_for:
         host: "{{ item.public_dns_name }}"
@@ -112,14 +106,14 @@
         port: 22
         state: started
       loop: "{{ ec21.instances }}"
-
+# Run first role to install docker and build docker image
 - hosts: firstec2
   gather_facts: yes
   tasks:
   - name: running role
     include_role:
       name: ec2-1
-
+# Run second role to pull docker image
 - hosts: firstec21
   gather_facts: yes
   tasks:
