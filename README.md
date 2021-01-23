@@ -13,7 +13,11 @@ add access and secret keys from amazon in the pass.yml:
 {
   "ec2_access_key": "Your key",   
   "ec2_secret_key": "Your key"  
-}  
+}    
+
+add the next ip in the hosts file:  
+[localhost]  
+127.0.0.1  
 
 add this lines in ansible.cfg:  
 [defaults]  
