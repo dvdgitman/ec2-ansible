@@ -29,7 +29,12 @@ private_key_file = "pem file key path"
 roles_path = "roles file path"    
 
 run the playbook with the next command:  
-#ansible-playbook "playbook.yml" --ask-vault   
+#ansible-playbook "playbook.yml" --ask-vault 
+
+**don't forget to change:( in the playbook.yml - (instance creation section")  
+key_name: " pem file name "  
+subnet: " your aws subnet"  
+
 
 
 
