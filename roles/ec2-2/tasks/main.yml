@@ -29,4 +29,3 @@
   become: yes
   docker_image:
     name: davidgman2/ip:v0.1
-
