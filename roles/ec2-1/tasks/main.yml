@@ -1,7 +1,7 @@
 ---
 # tasks file for ec2-1
 
-- name: Add the user 'docker', appending the group 'admins' and 'users' to the user's groups
+- name: Add the user 'docker', appending the group 'users' to the user's groups
   user:
     name: docker
     groups: users
@@ -51,7 +51,7 @@
   docker_image:
     build:
       path: /home/ubuntu/ip/iplocation
-    name: ip:v1.0
+    name: ipapp:v0.1
     repository: davidgman2/ip
-    pull: false
+    push: yes
     source: build

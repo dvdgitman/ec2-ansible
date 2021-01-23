@@ -114,14 +114,14 @@
       loop: "{{ ec21.instances }}"
 
 - hosts: firstec2
-  gather_facts: no
+  gather_facts: yes
   tasks:
   - name: running role
     include_role:
       name: ec2-1
 
 - hosts: firstec21
-  gather_facts: no
+  gather_facts: yes
   tasks:
   - name: running role
     include_role:
