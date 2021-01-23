@@ -15,7 +15,7 @@ add access and secret keys from amazon in the pass.yml:
 }  
 
 add this lines in ansible.cfg:  
-[defaults]
+[defaults]  
 host_key_checking = false  
 remote_user = ubuntu  
 private_key_file = "pem file key path"  
