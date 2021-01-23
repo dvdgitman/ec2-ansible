@@ -24,4 +24,3 @@
   become: yes
   docker_image:
     name: int2020devops/ansible:v0.1
-  source: pull
