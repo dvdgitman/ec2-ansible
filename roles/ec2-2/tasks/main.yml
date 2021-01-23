@@ -1,17 +1,8 @@
 ---
 # tasks file for ec2-2
-- name: Make Sure Docker Is Installed
-  become: yes
-  apt:
-    name: docker.io
-    state: present
-    update_cache: yes
-
-- name: Start Docker Service
-  become: yes
-  service:
-    name: docker
-    state: started
+- name: pull an image
+  docker_image:
+    name: davidgman2/ip:latest
 
 
 

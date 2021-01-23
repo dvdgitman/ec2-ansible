@@ -26,7 +26,7 @@
     - name: Creating Security Group for EC2 on AWS
       ec2_group:
         name: MySecurityGroup
-        description: Security Group for EC2 allowing port for http and ssh
+        description: MySecurityGroup
         region: us-east-2
         aws_access_key: "{{ec2_access_key}}"
         aws_secret_key: "{{ec2_secret_key}}"

@@ -1,17 +1,20 @@
 ---
 # tasks file for ec2-1
-- name: Make Sure pip3 Is Installed
+
+- name: Add the user 'docker', appending the group 'admins' and 'users' to the user's groups
+  user:
+    name: docker
+    groups: users
+    append: yes
   become: yes
+
+
+- name: Check If Python Is Installed
   apt:
-    update_cache: yes
     name: python3-pip
     state: present
-
-- name: Make Sure Docker Py Is Installed
+    update_cache: yes
   become: yes
-  pip:
-    name: docker-py
-    state: present
 
 - name: Make Sure Docker Is Installed
   become: yes
@@ -31,16 +34,24 @@
     repo: https://github.com/dvdgitman/ip-geolocation-locator
     dest: /home/ubuntu/ip/iplocation
 
+- name: make sure docker-py installed
+  become: yes
+  pip:
+    name: docker-py
+
 - name: Log into DockerHub
+  become: yes
   docker_login:
-    username: davidgman2
-    password: 123456789
+    username: "davidgman2"
+    password: "123456789"
+    api_version: auto
 
 - name: Build an image and push to docker hub
+  become: yes
   docker_image:
     build:
-      path: /home/ubuntu/ip/iplocation:1.1
-    name: ip
+      path: /home/ubuntu/ip/iplocation
+    name: ip:v1.0
     repository: davidgman2/ip
-    tag: v1
+    pull: false
     source: build
